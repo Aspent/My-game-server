@@ -33,8 +33,18 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="OpenTK, Version=1.1.0.0, Culture=neutral, PublicKeyToken=bad199fe84eb3df4, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\Debug\OpenTK.dll</HintPath>
+    </Reference>
+    <Reference Include="OpenTK.GLControl, Version=1.1.0.0, Culture=neutral, PublicKeyToken=bad199fe84eb3df4, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\Debug\OpenTK.GLControl.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -43,12 +53,60 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BossCancerController.cs" />
+    <Compile Include="Command.cs" />
+    <Compile Include="Core\Boss.cs" />
+    <Compile Include="Core\BossRoom.cs" />
+    <Compile Include="Core\ChallengeRoom.cs" />
+    <Compile Include="Core\Door.cs" />
+    <Compile Include="Core\Enemy.cs" />
+    <Compile Include="Core\FinishZone.cs" />
+    <Compile Include="Core\Game.cs" />
+    <Compile Include="Core\GameInfo.cs" />
+    <Compile Include="Core\Item.cs" />
+    <Compile Include="Core\ItemEffect.cs" />
+    <Compile Include="Core\Level.cs" />
+    <Compile Include="Core\Lever.cs" />
+    <Compile Include="Core\Network.cs" />
+    <Compile Include="Core\Note.cs" />
+    <Compile Include="Core\Obstacle.cs" />
+    <Compile Include="Core\Person.cs" />
+    <Compile Include="Core\Player.cs" />
+    <Compile Include="DefaultEnemyController.cs" />
+    <Compile Include="DefaultLevelSupervisor.cs" />
+    <Compile Include="DefaultRoomSupervisor.cs" />
+    <Compile Include="EnemyWriter.cs" />
+    <Compile Include="IController.cs" />
+    <Compile Include="IEnemyController.cs" />
+    <Compile Include="ILevelSupervisor.cs" />
+    <Compile Include="IRoomSupervisor.cs" />
+    <Compile Include="LevelGenerator.cs" />
+    <Compile Include="NetCommandBuilder.cs" />
+    <Compile Include="NetPlayerController.cs" />
+    <Compile Include="Net\NetWorker.cs" />
+    <Compile Include="PlayerController.cs" />
+    <Compile Include="PlayerUpdater.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Core\Room.cs" />
+    <Compile Include="Core\RoomBorder.cs" />
+    <Compile Include="Core\Shot.cs" />
+    <Compile Include="Core\ShotCharacteristics.cs" />
+    <Compile Include="RoomsRepository.cs" />
+    <Compile Include="RoomSupervisor.cs" />
+    <Compile Include="Service\CollisionChecker.cs" />
+    <Compile Include="Service\IntersectionDeterminant.cs" />
+    <Compile Include="Service\ItemWriter.cs" />
+    <Compile Include="Service\RoomWriter.cs" />
+    <Compile Include="Service\ShotCharacteristicWriter.cs" />
+    <Compile Include="Service\TextureLoader.cs" />
+    <Compile Include="ShotCharacteristicLoader.cs" />
+    <Compile Include="ShotsUpdater.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
