@@ -1,5 +1,4 @@
-﻿using System.Text;
-using MyGameServer.Core;
+﻿using MyGameServer.Core;
 using MyGameServer.Service;
 
 namespace MyGameServer
@@ -93,14 +92,28 @@ namespace MyGameServer
 
         public void Run()
         {
-            var player = _room.Player;
+            //var player = _room.Players[0];
+            foreach (var player in _room.Players)
+            {
+                foreach (var t in _room.Players)
+                {
+                    NetCommandBuilder.AppendToRoomCommand(player, "player_move/" + _room.Players.IndexOf(t) + "/"
+                                                                  + t.X + "/" + t.Y + "/" + t.Texture);
+                }
+            }
+
             foreach (var t in _room.Enemies)
             {
                 if (!t.IsWaiting)
                 {
                     _room.EnemyControllers[t].Control();
-                    NetCommandBuilder.AppendToRoomCommand("enemy_move/" + _room.Enemies.IndexOf(t) + "/" 
-                        +  t.X + "/" + t.Y + "/" + t.Texture);
+                    foreach (var player in _room.Players)
+                    {
+                        NetCommandBuilder.AppendToRoomCommand(player, "enemy_move/" + _room.Enemies.IndexOf(t) + "/"
+                        + t.X + "/" + t.Y + "/" + t.Texture);
+                    }
+                    //NetCommandBuilder.AppendToRoomCommand("enemy_move/" + _room.Enemies.IndexOf(t) + "/" 
+                    //    +  t.X + "/" + t.Y + "/" + t.Texture);
 
                     //if (t is Boss)
                     //{
@@ -120,8 +133,12 @@ namespace MyGameServer
                 {
                     t.IsWaiting = false;
                     _room.Enemies.Add(t);
-                    NetCommandBuilder.AppendToRoomCommand("enemy_add/" + t.X + "/" + t.Y + "/" +
+                    foreach (var player in _room.Players)
+                    {
+                        NetCommandBuilder.AppendToRoomCommand(player, "enemy_add/" + t.X + "/" + t.Y + "/" +
                                              t.Form.Width + "/" + t.Form.Height + "/" + t.Texture);
+                    }
+                    
                 }
                 _room.SummonedEnemies.Clear();
             }
@@ -130,14 +147,22 @@ namespace MyGameServer
             foreach (var t in _room.Shots)
             {
                 t.Move();
-                NetCommandBuilder.AppendToRoomCommand("shot_move/" + _room.Shots.IndexOf(t) + "/" 
-                    + t.X + "/" + t.Y + "/"  + t.Texture);
+                foreach (var player in _room.Players)
+                {
+                    NetCommandBuilder.AppendToRoomCommand(player, "shot_move/" + _room.Shots.IndexOf(t) + "/"
+                    + t.X + "/" + t.Y + "/" + t.Texture);
+                }
+                
             }
             foreach (var t in _room.Shots)
             {
                 if (ShotIsRemoved(t))
                 {
-                    NetCommandBuilder.AppendToRoomCommand("shot_remove/" + _room.Shots.IndexOf(t));
+                    foreach (var player in _room.Players)
+                    {
+                        NetCommandBuilder.AppendToRoomCommand(player, "shot_remove/" + _room.Shots.IndexOf(t));
+                    }
+                    
                 }
             }
             _room.Shots.RemoveAll(ShotIsRemoved);
@@ -145,15 +170,20 @@ namespace MyGameServer
             var collisionChecker = new CollisionChecker();
             foreach (var t in _room.Shots)
             {
-                if (collisionChecker.IsCollided(t, _room))
+                foreach (var player in _room.Players)
                 {
-                    OnShotBorderCollision?.Invoke(t, _room);
-                }
-                if (collisionChecker.IsCollided(t, player))
-                {
-                    if (t.Owner.GetType() != player.GetType())
+
+
+                    if (collisionChecker.IsCollided(t, _room))
                     {
-                        OnShotPlayerCollision?.Invoke(t, player);
+                        OnShotBorderCollision?.Invoke(t, _room);
+                    }
+                    if (collisionChecker.IsCollided(t, player))
+                    {
+                        if (t.Owner.GetType() != player.GetType())
+                        {
+                            OnShotPlayerCollision?.Invoke(t, player);
+                        }
                     }
                 }
                 foreach (var item in _room.Enemies)
@@ -170,16 +200,25 @@ namespace MyGameServer
 
             foreach (var t in _room.Items)
             {
-                if (collisionChecker.IsCollided(player, t) && t.IsAvailable)
+                foreach (var player in _room.Players)
                 {
-                    OnPlayerItemCollision?.Invoke(player, t);
+
+
+                    if (collisionChecker.IsCollided(player, t) && t.IsAvailable)
+                    {
+                        OnPlayerItemCollision?.Invoke(player, t);
+                    }
                 }
             }
             foreach (var t in _room.Shots)
             {
                 if (ShotIsRemoved(t))
                 {
-                    NetCommandBuilder.AppendToRoomCommand("shot_remove/" + _room.Shots.IndexOf(t));
+                    foreach (var player in _room.Players)
+                    {
+                        NetCommandBuilder.AppendToRoomCommand(player, "shot_remove/" + _room.Shots.IndexOf(t));
+                    }
+                    
                 }
             }
             _room.Shots.RemoveAll(ShotIsRemoved);
@@ -187,7 +226,11 @@ namespace MyGameServer
             {
                 if (EnemyIsDead(t))
                 {
-                    NetCommandBuilder.AppendToRoomCommand("enemy_remove/" + _room.Enemies.IndexOf(t));
+                    foreach (var player in _room.Players)
+                    {
+                        NetCommandBuilder.AppendToRoomCommand(player, "enemy_remove/" + _room.Enemies.IndexOf(t));
+                    }
+                    
                 }
             }
             _room.Enemies.RemoveAll(EnemyIsDead);

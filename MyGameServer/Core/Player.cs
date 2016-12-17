@@ -7,24 +7,25 @@ namespace MyGameServer.Core
     class Player : Person
     {
         readonly PlayerController _controller = new PlayerController();
+        private int _id;
 
         #region Constructors
 
-        public Player(float x, float y, float width, float height, float speed, double attackSpeed, 
+        public Player(int id,float x, float y, float width, float height, float speed, double attackSpeed, 
             int leftTexture, int rightTexture, ShotCharacteristics shotChar, int hp, int damage,
             float shotSpeed, float shotRange, string name) 
             : base(x, y, width, height, speed, attackSpeed, leftTexture, rightTexture, shotChar, hp, damage, 
             shotSpeed, shotRange, name)
         {
-            
-            
+            _id = id;
+
         }      
 
         public override bool CanMove(Vector2 direction, Room room)
         {
             var collisionChecker = new CollisionChecker();
             direction.Normalize();
-            var movedPlayer = new Player(_x + _speed * direction.X, _y + _speed * direction.Y,
+            var movedPlayer = new Player(_id, _x + _speed * direction.X, _y + _speed * direction.Y,
                 _width, _height, _speed, _attackSpeed, _leftTexture, _rightTexture, _shotChar, _hp, _damage, 
                 _shotSpeed, _shotRange, _name);
             if (collisionChecker.IsCollided(movedPlayer, room))

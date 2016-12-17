@@ -106,7 +106,7 @@ namespace MyGameServer.Core
                 }
             }
 
-            if (collisionChecker.IsCollided(room.Player, movedEnemy))
+            if (collisionChecker.IsCollided(room.Players[0], movedEnemy))
             {
                 return false;
             }

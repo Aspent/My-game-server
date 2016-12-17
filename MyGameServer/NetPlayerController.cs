@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 using MyGameServer.Net;
 using MyGameServer.Core;
 using OpenTK;
@@ -31,10 +29,11 @@ namespace MyGameServer
             _playerActions["tlr"] = TurnLeverRight;
         }
 
-        public void Control(Player player, Room room)
+        public void Control(Player player, Room room, string command)
         {
 
-            var message = Encoding.UTF8.GetString(_networker.Receive());
+            //var message = Encoding.UTF8.GetString(_networker.Receive());
+            var message = command;
             var strings = message.Split('/');
             foreach (var t in strings)
             {
@@ -52,7 +51,7 @@ namespace MyGameServer
 
         private void MoveLeft(Person player, Room room)
         {
-            Console.WriteLine("I try to move left");
+            //Console.WriteLine("I try to move left");
             var direction = new Vector2(-1, 0);
             if (player.CanMove(direction, room))
             {

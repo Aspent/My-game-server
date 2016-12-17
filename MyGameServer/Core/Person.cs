@@ -1,5 +1,4 @@
-﻿using System;
-using System.Drawing;
+﻿using System.Drawing;
 using System.Timers;
 using OpenTK;
 
@@ -222,11 +221,15 @@ namespace MyGameServer.Core
 
         public void Shoot(Room room, Shot shot)
         {
-            Console.WriteLine(_canShoot);
+            //Console.WriteLine(_canShoot);
             if (!_canShoot) return;
             room.Shots.Add(shot);
-            NetCommandBuilder.AppendToRoomCommand("shot_add/" + shot.X + "/" + shot.Y + "/" + shot.Form.Width
+            foreach (var player in room.Players)
+            {
+                NetCommandBuilder.AppendToRoomCommand(player, "shot_add/" + shot.X + "/" + shot.Y + "/" + shot.Form.Width
                                      + "/" + shot.Form.Height + "/" + shot.Texture);
+            }
+            
             _canShoot = false;
             _timer.Interval = _attackSpeed;
             _timer.Elapsed += OnTimedEvent;

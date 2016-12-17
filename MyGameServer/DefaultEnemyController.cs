@@ -16,7 +16,7 @@ namespace MyGameServer
 
         public void Control()
         {
-            var player = _room.Player;
+            var player = _room.Players[0];
             if (_enemy.IsWaiting) return;
             var distance = new Vector2(player.X - _enemy.X, player.Y - _enemy.Y).Length;
             var direction = new Vector2(player.X - _enemy.X, player.Y - _enemy.Y);

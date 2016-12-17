@@ -21,6 +21,7 @@ namespace MyGameServer.Core
         protected Door _leftDoor;
         protected Door _rightDoor;
         protected Player _player;
+        protected List<Player> _players = new List<Player>(); 
         protected Dictionary<Enemy, IEnemyController> _enemyControllers 
             = new Dictionary<Enemy, IEnemyController>(); 
         
@@ -135,6 +136,12 @@ namespace MyGameServer.Core
         {
             get { return _enemyControllers; }
         }
+
+        public List<Player> Players
+        {
+            get { return _players; }
+        } 
+
 
         #endregion
 

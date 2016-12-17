@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using MyGameServer.Core;
+﻿using MyGameServer.Core;
 using OpenTK;
 
 namespace MyGameServer
@@ -21,7 +16,7 @@ namespace MyGameServer
 
         public void Control()
         {
-            var player = _room.Player;
+            var player = _room.Players[0];
             if (_boss.IsWaiting) return;
             var distance = new Vector2(player.X - _boss.X, player.Y - _boss.Y).Length;
             var direction = new Vector2(player.X - _boss.X, player.Y - _boss.Y);
